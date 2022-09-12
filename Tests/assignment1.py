@@ -49,7 +49,7 @@ question1 = [
         "inputs": [
             [6, 8, 9, 14, 10, 12],
         ],
-        "outputs": [3]
+        "outputs": [3, 5]
     },
     {
         "inputs": [
