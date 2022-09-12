@@ -166,7 +166,7 @@ question4 = [
             [0, 1, 2, 5, 9],
             4
         ],
-        "outputs": [5]
+        "outputs": [1]
     },
     {
         "inputs": [
@@ -174,7 +174,7 @@ question4 = [
             [6],
             1
         ],
-        "outputs": [6]
+        "outputs": [2]
     },
     {
         "inputs": [
