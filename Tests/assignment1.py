@@ -19,7 +19,7 @@ question1 = [
         "inputs": [
             [1, 2, 1, 3, 5, 6, 4],
         ],
-        "outputs": [2, 5]
+        "outputs": [1, 5]
     },
     {
         "inputs": [

@@ -147,7 +147,8 @@ for student_path in submissions_path.glob("*_800*"):
             try:
                 program_out = subprocess.run(exec_args_list + [f"question{q_idx + 1}"] + cli_args,
                                              capture_output=True,
-                                             text=True)
+                                             text=True,
+                                             check=True)
             except Exception as e:
                 student_result["is_correct"] = False
                 student_result["errors"] = repr(e)
@@ -160,7 +161,7 @@ for student_path in submissions_path.glob("*_800*"):
             print(f"Desired output: {output_args_str}")
             print(f"Student output: {program_out_str}")
 
-            if output_args_str == program_out_str:
+            if program_out_str in map(str, test["outputs"]):
                 print("CORRECT")
                 student_result["is_correct"] = True
 
