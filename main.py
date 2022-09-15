@@ -80,7 +80,7 @@ for student_path in submissions_path.glob("*_800*"):
                 "-I",
                 Path(cpp_caller_path).absolute(),
                 "-o",
-                Path(student_path, f"assignment{assignment_no}_compiled", f"assignment{assignment_no}").absolute()
+                Path(student_path, f"assignment{assignment_no}_compiled", f"assignment{assignment_no}.exe").absolute()
             ], check=True)
 
         except Exception as e:
