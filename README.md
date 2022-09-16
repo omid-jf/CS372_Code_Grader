@@ -5,19 +5,22 @@ A script to grade students' submissions written in CPP, Java, and Python.
 Tested only on the following versions.
 - python 3.10
 - pandas 1.4
+- openpyxl 3.0
 - g++ 12.1.0 (to compile C++ codes)
 - javac and java 18 (to compile and run Java codes)
 
-## How to run:
-python main.py _<assignment_number>_ _<submissions_path>_
+## How to run (from source):
+Clone the Git repository and run the coding using:
 
-e.g.: python main.py 1 "D:\Submissions"
+`python main.py _<assignment_number>_ _<submissions_path>_`
+
+e.g.: `python main.py 1 "D:\Submissions"`
 
 A sample submissions folder is provided.
 
 ## Output:
-Two CSV files:
-1. assignment1_grades.csv
+One Excel file (assignment1_grades.xlsx) with the following sheets:
+1. grades
    - contains the number of incorrect tests for each question.
-2. assignment1_grades_details.csv
+2. details
    - contains the students' codes outputs and the desired outputs for each test and each question.

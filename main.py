@@ -81,14 +81,14 @@ for student_path in submissions_path.glob("*_800*"):
                 Path(cpp_caller_path).absolute(),
                 "-o",
                 Path(student_path, f"assignment{assignment_no}_compiled", f"assignment{assignment_no}.exe").absolute()
-            ], check=True)
+            ], check=True, capture_output=True, text=True)
 
         except Exception as e:
             student_result["is_correct"] = False
             student_result["question"] = 0
-            student_result["errors"] = repr(e)
+            student_result["errors"] = e.stderr
             results.append(student_result)
-            print(repr(e))
+            print(e.stderr)
             continue
 
         exec_args_list = [
@@ -110,14 +110,14 @@ for student_path in submissions_path.glob("*_800*"):
                 Path(student_path, f"assignment{assignment_no}.java").absolute(),
                 "-d",
                 Path(student_path, f"assignment{assignment_no}_compiled").absolute()
-            ], check=True)
+            ], check=True, capture_output=True, text=True)
 
         except Exception as e:
             student_result["is_correct"] = False
             student_result["question"] = 0
-            student_result["errors"] = repr(e)
+            student_result["errors"] = e.stderr
             results.append(student_result)
-            print(repr(e))
+            print(e.stderr)
             continue
 
         exec_args_list = [
@@ -128,18 +128,23 @@ for student_path in submissions_path.glob("*_800*"):
         ]
 
     else:
-        raise Exception("No submission.")
+        student_result["is_correct"] = False
+        student_result["question"] = 0
+        student_result["errors"] = "No Submission/Wrong submission name."
+        results.append(student_result)
+        print("No Submission/Wrong submission name.")
+        continue
 
     spec = importlib.util.spec_from_file_location("questions", Path("Tests", f"assignment{assignment_no}.py"))
     foo = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(foo)
 
     for q_idx, question in enumerate(foo.questions):
-        print(f"Question {q_idx + 1}:")
+        print(f"\tQuestion {q_idx + 1}:")
 
         for text_idx, test in enumerate(question):
             student_result = {"name": str(student_path.name), "question": q_idx + 1, "test": text_idx + 1}
-            print(f"Test {text_idx + 1}/{len(question)}:")
+            print(f"\t\tTest {text_idx + 1}/{len(question)}:")
 
             cli_args = convert_list_to_cli(test["inputs"])
             output_args_str = " ".join(convert_list_to_cli(test["outputs"]))
@@ -151,22 +156,22 @@ for student_path in submissions_path.glob("*_800*"):
                                              check=True)
             except Exception as e:
                 student_result["is_correct"] = False
-                student_result["errors"] = repr(e)
+                student_result["errors"] = e.stderr
                 results.append(student_result)
-                print(repr(e))
+                print(e.stderr)
                 continue
 
             program_out_str = program_out.stdout.strip().split(f'Question{q_idx + 1}: ')[1]
 
-            print(f"Desired output: {output_args_str}")
-            print(f"Student output: {program_out_str}")
+            print(f"\t\t\tDesired output: {output_args_str}")
+            print(f"\t\t\tStudent output: {program_out_str}")
 
             if program_out_str in map(str, test["outputs"]):
-                print("CORRECT")
+                print("\t\t\tCORRECT")
                 student_result["is_correct"] = True
 
             else:
-                print("FALSE")
+                print("\t\t\tFALSE")
                 student_result["is_correct"] = False
 
             student_result["cli_args"] = cli_args
@@ -175,16 +180,18 @@ for student_path in submissions_path.glob("*_800*"):
 
             results.append(student_result)
 
-df = pd.DataFrame(results)
-df.to_csv(f"assignment{assignment_no}_grades_details.csv", index=False)
 
+df = pd.DataFrame(results)
 df2 = df.groupby(["name", "question"]).apply(
     lambda dff: pd.Series({
         "false_count": sum(dff.is_correct == False),
-        "total_count": dff.is_correct.count()
+        "total_count": dff.is_correct.count(),
+        "is_correct": "TRUE" if sum(dff.is_correct == False) == 0 else "FALSE"
     })
 )
 
-df2.to_csv(f"assignment{assignment_no}_grades.csv", index=True)
+with pd.ExcelWriter(f"assignment{assignment_no}_grades.xlsx") as writer:
+    df.to_excel(writer, sheet_name="details", index=False, freeze_panes=(1,1))
+    df2.to_excel(writer, sheet_name="grades", index=True, freeze_panes=(1,1))
 
 print("DONE")
