@@ -10,13 +10,35 @@ Tested only on the following versions.
 - javac and java 18 (to compile and run Java codes)
 
 ## How to run (from source):
-Clone the Git repository and run the coding using:
+1. Make sure all the requirements are installed.
+2. Cone the Git repository.
+3. Copy your folder (which contains your source code file) into the _Submissions_ folder. A sample folder (named _Doe_800123123_) is provided in the _Submissions_ folder.
+4. Run the grader using:
 
-`python main.py _<assignment_number>_ _<submissions_path>_`
+   `python main.py <assignment_number> Submissions`
 
-e.g.: `python main.py 1 "D:\Submissions"`
+   example: `python main.py 1 Submissions`
 
-A sample submissions folder is provided.
+## How to run (using Docker):
+1. Make sure the Docker platform is installed on your machine. It can be installed from https://www.docker.com/
+2. Build the image using the following command in Terminal / PowerShell / Command Prompt:
+   
+   `docker build -t cs372_code_grader .`
+3. Run the image using the following command:
+   - In Terminal and PowerShell:
+   
+   `docker run --rm -v ${PWD}:/app cs372_code_grader <assignment_number> Submissions`
+   
+   example: `docker run --rm -v ${PWD}:/app cs372_code_grader 1 Submissions`
+
+   - In Command Prompt:
+
+   `docker run --rm -v "%cd%":/app cs372_code_grader <assignment_number> Submissions`
+   
+   example: `docker run --rm -v "%cd%":/app cs372_code_grader 1 Submissions`
+4. Remove the created image using the following command:
+
+   `docker rmi cs372_code_grader`
 
 ## Output:
 One Excel file (assignment1_grades.xlsx) with the following sheets:
