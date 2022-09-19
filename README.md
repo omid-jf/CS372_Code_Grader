@@ -11,7 +11,7 @@ Tested only on the following versions.
 
 ## How to run (from source):
 1. Make sure all the requirements are installed.
-2. Cone the Git repository.
+2. Clone the Git repository.
 3. Copy your folder (which contains your source code file) into the _Submissions_ folder. A sample folder (named _Doe_800123123_) is provided in the _Submissions_ folder.
 4. Run the grader using:
 
@@ -24,7 +24,8 @@ Tested only on the following versions.
 2. Build the image using the following command in Terminal / PowerShell / Command Prompt:
    
    `docker build -t cs372_code_grader .`
-3. Run the image using the following command:
+3. Copy your folder (which contains your source code file) into the _Submissions_ folder. A sample folder (named _Doe_800123123_) is provided in the _Submissions_ folder.
+4. Run the image using the following command:
    - In Terminal and PowerShell:
    
    `docker run --rm -v ${PWD}:/app cs372_code_grader <assignment_number> Submissions`
@@ -36,7 +37,7 @@ Tested only on the following versions.
    `docker run --rm -v "%cd%":/app cs372_code_grader <assignment_number> Submissions`
    
    example: `docker run --rm -v "%cd%":/app cs372_code_grader 1 Submissions`
-4. Remove the created image using the following command:
+5. Remove the created image using the following command:
 
    `docker rmi cs372_code_grader`
 
