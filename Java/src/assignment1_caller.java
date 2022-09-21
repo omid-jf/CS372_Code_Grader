@@ -49,7 +49,8 @@ public class assignment1_caller {
                     Integer.parseInt(args[3])
             	);
             	break;
-            default -> throw new RuntimeException("Question number not given.");
+            default:
+            	throw new RuntimeException("Question number not given.");
         }
     }
 }
