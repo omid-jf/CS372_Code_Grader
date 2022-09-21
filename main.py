@@ -10,7 +10,6 @@
 
 from pathlib import Path
 import subprocess
-import pandas as pd
 import sys
 import importlib.util
 
@@ -43,10 +42,24 @@ def convert_list_to_cli(in_list: list) -> list:
 
 assignment_no = int(sys.argv[1])
 submissions_path = Path(sys.argv[2]).absolute()
+
+out_mode = "both"
+if len(sys.argv) == 4:
+    if sys.argv[3] not in ["file", "console", "both"]:
+        raise ValueError("Invalid command line argument.")
+
+    out_mode = sys.argv[3]
+
+if out_mode == "file":
+    print = lambda *x, **y: None
+
 exec_args_list = []
 results = []
 
 for student_path in submissions_path.glob("*_800*"):
+    if not student_path.is_dir():
+        continue
+
     student_result = {"name": str(student_path.name)}
     print("===================================")
     print(str(student_path.name))
@@ -180,18 +193,20 @@ for student_path in submissions_path.glob("*_800*"):
 
             results.append(student_result)
 
+if out_mode != "console":
+    import pandas as pd
 
-df = pd.DataFrame(results)
-df2 = df.groupby(["name", "question"]).apply(
-    lambda dff: pd.Series({
-        "false_count": sum(dff.is_correct == False),
-        "total_count": dff.is_correct.count(),
-        "is_correct": "TRUE" if sum(dff.is_correct == False) == 0 else "FALSE"
-    })
-)
+    df = pd.DataFrame(results)
+    df2 = df.groupby(["name", "question"]).apply(
+        lambda dff: pd.Series({
+            "false_count": sum(dff.is_correct == False),
+            "total_count": dff.is_correct.count(),
+            "is_correct": "TRUE" if sum(dff.is_correct == False) == 0 else "FALSE"
+        })
+    )
 
-with pd.ExcelWriter(f"assignment{assignment_no}_grades.xlsx") as writer:
-    df.to_excel(writer, sheet_name="details", index=False, freeze_panes=(1,1))
-    df2.to_excel(writer, sheet_name="grades", index=True, freeze_panes=(1,1))
+    with pd.ExcelWriter(f"assignment{assignment_no}_grades.xlsx") as writer:
+        df.to_excel(writer, sheet_name="details", index=False, freeze_panes=(1, 1))
+        df2.to_excel(writer, sheet_name="grades", index=True, freeze_panes=(1, 1))
 
 print("DONE")

@@ -33,14 +33,22 @@ public class assignment1_caller {
 
     public static void main(String[] args) {
         switch (args[0]) {
-            case "question1" -> question1_caller(utils.str_to_int_array(args[1]));
-            case "question2" -> question2_caller(utils.str_to_int_array(args[1]));
-            case "question3" -> question3_caller(utils.str_to_int_array(args[1]));
-            case "question4" -> question4_caller(
+            case "question1":
+            	question1_caller(utils.str_to_int_array(args[1]));
+            	break;
+            case "question2":
+            	question2_caller(utils.str_to_int_array(args[1]));
+            	break;
+            case "question3":
+            	question3_caller(utils.str_to_int_array(args[1]));
+            	break;
+            case "question4":
+            	question4_caller(
                     utils.str_to_int_array(args[1]),
                     utils.str_to_int_array(args[2]),
                     Integer.parseInt(args[3])
-            );
+            	);
+            	break;
             default -> throw new RuntimeException("Question number not given.");
         }
     }
