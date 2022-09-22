@@ -23,13 +23,7 @@ def convert_list_to_cli(in_list: list) -> list:
 
         elif isinstance(elem, list):
             if isinstance(elem[0], list):  # 2d list
-                tmp = "["
-                for dim_idx, dim in enumerate(elem):
-                    tmp += "["
-                    tmp += ",".join(map(str, dim))
-                    tmp += "]" if dim_idx == len(elem) - 1 else "],"
-                tmp += "]"
-                output.append(tmp)
+                output.append("|".join(",".join(str(num) for num in sublist) for sublist in elem))
 
             elif isinstance(elem[0], int):  # 1d list of ints
                 output.append(",".join(map(str, elem)))

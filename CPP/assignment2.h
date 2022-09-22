@@ -8,15 +8,14 @@
 //  the LICENSE file that was distributed with this source code.
 //  ============================================================
 
-#ifndef CPP_UTILS_H
-#define CPP_UTILS_H
+#ifndef CPP_ASSIGNMENT2_H
+#define CPP_ASSIGNMENT2_H
 
-#include <iostream>
 #include <vector>
-#include <sstream>
 #include <string>
 
-std::vector<int> str_to_int_vector(const std::string&);
-std::vector<std::vector<int>> str_to_2d_int_vector(const std::string& input);
+std::string question1(const std::string&, int&);
+std::string question2(const std::string&);
+int question3(const std::vector<std::vector<int>>&);
 
-#endif //CPP_UTILS_H
+#endif //CPP_ASSIGNMENT2_H
