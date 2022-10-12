@@ -168,7 +168,7 @@ for student_path in submissions_path.glob("*_800*"):
                 print(e.stderr)
                 continue
 
-            prog_raw_out = program_out.stdout.strip().split(f'Question{q_idx + 1}: ')
+            prog_raw_out = program_out.stdout.strip(" \x00\n\t").split(f'Question{q_idx + 1}: ')
             program_out_str = prog_raw_out[1] if len(prog_raw_out) > 1 else ""
 
             print(f"\t\t\tDesired output: {output_args_str}")
