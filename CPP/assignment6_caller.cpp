@@ -21,7 +21,7 @@ void question2_caller(const std::string& input1) {
     std::cout << "Question2: " << output << std::endl;
 }
 
-void question3_caller(int& input1) {
+void question3_caller(int input1) {
     int output = question3(input1);
     std::cout << "Question3: " << output << std::endl;
 }
